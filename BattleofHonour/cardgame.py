@@ -11,7 +11,6 @@ class Controller():
 
     PRESTART = 1
     RUNNING = 2
-    GAMEOVER = 3
 
     def __init__(self):
         self.events = {}
