@@ -33,3 +33,23 @@ class Controller():
 
         self.number_of_ticks = 0
         self.timeline_size = 120
+
+
+    def run(self):
+        self.game_state = Controller.RUNNING
+
+        while True:
+            #Handling all events
+            for event in pygame.event.get():
+                logger.debug('handling event {}'.format(event))
+
+                for event_type, callbacks in self.events.items():
+                    if event.type == event_type:
+                        for callback in callbacks:
+                            callback(event)
+
+                if event.type == pygame.KEYDOWN:
+                    for key in self.keymap.keys():
+                        if event.key == key:
+                            for callback in self.keymap[key]:
+                                callback(event)
