@@ -1,11 +1,12 @@
 import pygame
 import logging
 import sys
+pygame.init()
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
 
-SCREEN_SIZE = (800, 600)
+SCREEN_SIZE = pygame.display.set_mode((800, 600))
 
 class Controller():
 
@@ -21,32 +22,28 @@ class Controller():
         pygame.init()
         self.screen = pygame.display.set_mode(SCREEN_SIZE)
         pygame.display.set_caption('Battle of Honour')
-        self.clock = pygame.time-Clock()
-
-        self.register_eventhandler(pygame.QUIT, self.quit)
-        self.register_key(pygame.K_ESCAPE, self.quit)
+        self.clock = pygame.time.Clock()
 
         self.register_eventhandler(pygame.QUIT, self.quit)
         self.register_key(pygame.K_ESCAPE, self.quit)
 
         self.world = World(self)
+        self.card = Card(self)
 
         self.game_state = Controller.PRESTART
 
-        self.number_of_ticks = 0
-        self.timeline_size = 120
-
-        if (self.game_state = Controller.PRESTART):
             #draw 5 cards to both players
-
 
     def run(self):
         self.game_state = Controller.RUNNING
 
         while True:
+            pygame.display.flip()
             #Handling all events
             for event in pygame.event.get():
                 logger.debug('handling event {}'.format(event))
+
+                if event_type == pygame_
 
                 for event_type, callbacks in self.events.items():
                     if event.type == event_type:
@@ -59,9 +56,8 @@ class Controller():
                             for callback in self.keymap[key]:
                                 callback(event)
 
-                pygame.display.flip()
 
-                self.clock.tick(60)
+                self.clock.tick(15)
 
     def quit(self, event):
         logger.info('Quitting... Good bye!')
@@ -95,4 +91,4 @@ class Card():
 
     def draw(self):
         surface = pygame.Surface((200,150), flags=pygame.SRCALPHA)
-        surface.fill(self.colors['background'])
+        surface.fill(self.colors['background'], (100, 100, 75, 75 ))
