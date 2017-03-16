@@ -7,7 +7,7 @@ pygame.init()
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
 
-SCREEN_SIZE = pygame.display.set_mode((800, 600))
+SCREEN_SIZE = (800, 600)
 
 class Controller():
 
@@ -21,11 +21,15 @@ class Controller():
         self.keymap = {}
 
         pygame.init()
-        self.screen = pygame.display.set_mode((SCREEN_SIZE))
+        self.screen = pygame.display.set_mode(SCREEN_SIZE)
         pygame.display.set_caption('Battle of Honour')
         self.clock = pygame.time.Clock()
+
+        self.register_eventhandler(pygame.QUIT, self.quit)
+        self.register_key(pygame.K_ESCAPE, self.quit)
+
         self.world = World(self)
-        self.card = Card(self)
+
 
         self.game_state = Controller.PRESTART
 
@@ -35,12 +39,10 @@ class Controller():
         self.game_state = Controller.RUNNING
 
         while True:
-            pygame.display.flip()
             #Handling all events
             for event in pygame.event.get():
                 logger.debug('handling event {}'.format(event))
 
-                if event_type == pygame_
 
                 for event_type, callbacks in self.events.items():
                     if event.type == event_type:
@@ -52,23 +54,13 @@ class Controller():
                         if event.key == key:
                             for callback in self.keymap[key]:
                                 callback(event)
-
-                self.clock.tick = 15
-
                 #Draw everything on screen -------------------------
-                if self.game_state == Controller.RUNNING:
-                    self.world.draw()
+            if self.game_state == Controller.RUNNING:
+                self.world.draw()
 
-class World():
-    def __init__(self,controller):
-        self.controller = controller
-        self.screen = controller.screen
+            pygame.display.flip()
+            self.clock.tick(15)
 
-    def draw(self):
-        surface = pygame.Surface(SCREEN_SIZE)
-        surface.fill(pygame.Color('#FFB948'), (0, 0, SCREEN_SIZE[0], SCREEN_SIZE[1] - 100))
-
-        self.screen.blit(surface, (0, 0))
 
     def quit(self, event):
         logger.info('Quitting... Good bye!')
@@ -89,17 +81,21 @@ class World():
         else:
             self.keymap[key] = [callback]
 
-class Card():
-    def __init__(self, controller):
+
+
+class World():
+    def __init__(self,controller):
         self.controller = controller
         self.screen = controller.screen
 
-        self.controller.register_eventhandler(pygame.KEYDOWN, self.keydown)
-        self.controller.register_eventhandler(pygame.KEYUP, self.keyup)
-
-        self.colors = {'background': pygame.Color(''),
-                       'text': pygame.Color('')}
-
     def draw(self):
-        surface = pygame.Surface((200,150), flags=pygame.SRCALPHA)
-        surface.fill(self.colors['background'], (100, 100, 75, 75 ))
+        surface = pygame.Surface(SCREEN_SIZE)
+        surface.fill(pygame.Color('#FFB948'), (0, 0, SCREEN_SIZE[0], SCREEN_SIZE[1]))
+
+        self.screen.blit(surface, (0, 0))
+
+
+
+if __name__ == "__main__":
+    c = Controller()
+    c.run()
