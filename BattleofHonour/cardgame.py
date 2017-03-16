@@ -1,7 +1,6 @@
 import pygame
 import logging
 import sys
-pygame.init()
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
@@ -34,16 +33,13 @@ class Controller():
 
             #draw 5 cards to both players
 
-    def run(self):
+    def run(self)
         self.game_state = Controller.RUNNING
 
         while True:
-            pygame.display.flip()
             #Handling all events
             for event in pygame.event.get():
                 logger.debug('handling event {}'.format(event))
-
-                if event_type == pygame_
 
                 for event_type, callbacks in self.events.items():
                     if event.type == event_type:
@@ -56,8 +52,13 @@ class Controller():
                             for callback in self.keymap[key]:
                                 callback(event)
 
+            if self.game_state == Controller.RUNNING:
+                self.world.draw()
 
-                self.clock.tick(15)
+
+            pygame.display.flip()
+
+            self.clock.tick(15)
 
     def quit(self, event):
         logger.info('Quitting... Good bye!')
