@@ -1,16 +1,17 @@
 import pygame
 import logging
 import sys
-
+from random import shuffle
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
 
 SCREEN_SIZE = (800, 600)
 
+
 class Controller():
 
-    PRESTART = 1
+    INIT = 1
     RUNNING = 2
     PLAYER1 = 3
     PLAYER2 = 4
@@ -21,7 +22,7 @@ class Controller():
 
         pygame.init()
         self.screen = pygame.display.set_mode(SCREEN_SIZE)
-        pygame.display.set_caption('Battle of Honour')
+        pygame.display.set_caption('jaipur')
         self.clock = pygame.time.Clock()
 
         self.register_eventhandler(pygame.QUIT, self.quit)
@@ -30,22 +31,18 @@ class Controller():
         self.world = World(self)
 
 
-        self.game_state = Controller.PRESTART
+        self.game_state = Controller.INIT
 
         #draw 5 cards to both players
 
-    def run(self)
-        self.game_state = Controller.RUNNING
+    def run(self):
+        self.game_state = Controller.INIT
 
         while True:
             #Handling all events
             for event in pygame.event.get():
                 logger.debug('handling event {}'.format(event))
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 0c6b61fc9191649212975742592afd761e34cba4
                 for event_type, callbacks in self.events.items():
                     if event.type == event_type:
                         for callback in callbacks:
@@ -56,23 +53,21 @@ class Controller():
                         if event.key == key:
                             for callback in self.keymap[key]:
                                 callback(event)
-                #Draw everything on screen -------------------------
-            if self.game_state == Controller.RUNNING:
-                self.world.draw()
 
-<<<<<<< HEAD
+            # INIT game ----------------------------------------
+            if self.game_state == Controller.INIT:
+                self.cards = [Card('diamond')]
+
+
+            # Draw everything on screen ------------------------
             if self.game_state == Controller.RUNNING:
-                self.world.draw()
+                for card in self.cards:
+                    card.draw(200, 400)
 
 
             pygame.display.flip()
-
-            self.clock.tick(15)
-=======
-            pygame.display.flip()
             self.clock.tick(15)
 
->>>>>>> 0c6b61fc9191649212975742592afd761e34cba4
 
     def quit(self, event):
         logger.info('Quitting... Good bye!')
@@ -93,6 +88,69 @@ class Controller():
         else:
             self.keymap[key] = [callback]
 
+
+class Card():
+    VALID_CARD_TYPES = ['diamond', 'gold', 'silver','spice', 'cloth', 'leather', 'camel']
+
+    def __init__(self, controller, card_type):
+        self.card_type = ''  # We want to handle this later...
+
+        self.controller = controller
+        self.screen = controller.screen
+
+        self.controller.register_eventhandler(pygame.MOUSEBUTTONDOWN, self.mousedown)
+        self.controller.register_eventhandler(pygame.MOUSEBUTTONUP, self.mouseup)
+
+        if not card_type in Card.VALID_CARD_TYPES:
+            raise ValueError('Invalid card type')  # Not that Pythonic but helpful (this time at least).
+
+        self.card_type = card_type
+
+
+    def update(self):
+        pass
+
+    def draw(self):
+        pass
+
+    def mousedown(self, event):
+        logger.debug('Mouse down on card {}'.format(self))
+
+    def mouseup(self, event):
+        logger.debug('Mouse up on card {}'.format(self))
+
+
+    def __eq__(self, other):
+        return self.card_type == other.card_type
+
+
+    def __repr__(self):
+        return '<Card: {} (0x{:x})>'.format(self.card_type, id(self))
+
+
+class Deck():
+    DEFAULT_CARD_LIST = ['diamond'] * 6 + \
+                        ['gold'] * 6 + \
+                        ['silver'] * 6 + \
+                        ['cloth'] * 8 + \
+                        ['spice'] * 8 + \
+                        ['leather'] * 10 + \
+                        ['camel'] * 11
+
+    def __init__(self, controller, card_list = ''):
+        self.controller = controller
+        self.screen = controller.screen
+
+        self._cards = [Card(self.controller, t) for t in Deck.DEFAULT_CARD_LIST]
+        shuffle(self._cards)
+
+
+    def draw(self):
+        return self._cards.pop()
+
+
+    def __repr__(self):
+        return '<Deck: 0x{:x}>'.format(id(self))
 
 
 class World():
