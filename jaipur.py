@@ -56,7 +56,9 @@ class Controller():
 
             # INIT game ----------------------------------------
             if self.game_state == Controller.INIT:
-                self.cards = [Card('diamond')]
+                self.cards = [Card(self, 'diamond')]
+                self.game_state = Controller.RUNNING
+
 
 
             # Draw everything on screen ------------------------
@@ -93,8 +95,8 @@ class Card():
     VALID_CARD_TYPES = ['diamond', 'gold', 'silver','spice', 'cloth', 'leather', 'camel']
 
     def __init__(self, controller, card_type):
-        self.card_type = ''  # We want to handle this later...
 
+        self.card_type = ''  # We want to handle this later...
         self.controller = controller
         self.screen = controller.screen
 
@@ -110,8 +112,11 @@ class Card():
     def update(self):
         pass
 
-    def draw(self):
-        pass
+    def draw(self, x, y):
+        surface = pygame.Surface(SCREEN_SIZE)
+        surface.fill(pygame.Color('#FFFFFF'), (100, 100, 100, 200))
+        self.screen.blit(surface, (0,0))
+
 
     def mousedown(self, event):
         logger.debug('Mouse down on card {}'.format(self))
@@ -146,8 +151,10 @@ class Deck():
 
 
     def draw(self):
+        surface = pygame.Surface(SCREEN_SIZE)
+        surface.fill(pygame.color('#000000'), (150,150,50,100))
+        self.screen.blit(surface, (0,0))
         return self._cards.pop()
-
 
     def __repr__(self):
         return '<Deck: 0x{:x}>'.format(id(self))
@@ -160,10 +167,9 @@ class World():
 
     def draw(self):
         surface = pygame.Surface(SCREEN_SIZE)
-        surface.fill(pygame.Color('#FFB948'), (0, 0, SCREEN_SIZE[0], SCREEN_SIZE[1]))
+        surface.fill(pygame.Color('#FFFFFF'), (0, 0, SCREEN_SIZE[0], SCREEN_SIZE[1]))
 
         self.screen.blit(surface, (0, 0))
-
 
 
 if __name__ == "__main__":
