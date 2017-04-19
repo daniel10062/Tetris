@@ -28,8 +28,6 @@ class Controller():
         self.register_eventhandler(pygame.QUIT, self.quit)
         self.register_key(pygame.K_ESCAPE, self.quit)
 
-        self.world = World(self)
-
 
         self.game_state = Controller.INIT
 
@@ -108,13 +106,24 @@ class Card():
 
         self.card_type = card_type
 
+        self.surface = pygame.Surface((57, 81))
+        self.surface.fill(pygame.Color('#FFFFFF'), (0, 0, 57, 8))
+
+        IMAGEDICT = {'diamond': pygame.image.load('JaipurImages/diamond.png'),
+                    'gold': pygame.image.load('JaipurImages/gold.png'),
+                    'silver': pygame.image.load('JaipurImages/silver.png'),
+                    'spice': pygame.image.load('JaipurImages/spice.png'),
+                    'cloth': pygame.image.load('JaipurImages/cloth.png'),
+                    'leather': pygame.image.load('JaipurImages/leather.png'),
+                    'camel': pygame.image.load('JaipurImages/camel.png')}
+
 
     def update(self):
         pass
 
     def draw(self, x, y):
         surface = pygame.Surface(SCREEN_SIZE)
-        surface.fill(pygame.Color('#FFFFFF'), (100, 100, 100, 200))
+        self.latest_known_position = (x, y)
         self.screen.blit(surface, (0,0))
 
 
@@ -132,6 +141,8 @@ class Card():
     def __repr__(self):
         return '<Card: {} (0x{:x})>'.format(self.card_type, id(self))
 
+
+#Rita upp kort!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 class Deck():
     DEFAULT_CARD_LIST = ['diamond'] * 6 + \
@@ -158,18 +169,6 @@ class Deck():
 
     def __repr__(self):
         return '<Deck: 0x{:x}>'.format(id(self))
-
-
-class World():
-    def __init__(self,controller):
-        self.controller = controller
-        self.screen = controller.screen
-
-    def draw(self):
-        surface = pygame.Surface(SCREEN_SIZE)
-        surface.fill(pygame.Color('#FFFFFF'), (0, 0, SCREEN_SIZE[0], SCREEN_SIZE[1]))
-
-        self.screen.blit(surface, (0, 0))
 
 
 if __name__ == "__main__":
