@@ -30,7 +30,6 @@ class Controller():
 
         self.register_eventhandler(pygame.QUIT, self.quit)
         self.register_key(pygame.K_ESCAPE, self.quit)
-
         self.game_state = Controller.INIT
 
         #draw 5 cards to both players
@@ -127,6 +126,15 @@ class Card():
 
 
 
+        IMAGEDICT = {'diamond': pygame.image.load('JaipurImages/diamond.png'),
+                    'gold': pygame.image.load('JaipurImages/gold.png'),
+                    'silver': pygame.image.load('JaipurImages/silver.png'),
+                    'spice': pygame.image.load('JaipurImages/spice.png'),
+                    'cloth': pygame.image.load('JaipurImages/cloth.png'),
+                    'leather': pygame.image.load('JaipurImages/leather.png'),
+                    'camel': pygame.image.load('JaipurImages/camel.png')}
+
+
     def update(self):
         pass
 
@@ -156,6 +164,8 @@ class Card():
     def __repr__(self):
         return '<Card: {} (0x{:x})>'.format(self.card_type, id(self))
 
+
+#Rita upp kort!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 class Deck():
     DEFAULT_CARD_LIST = ['diamond'] * 6 + \
@@ -250,6 +260,7 @@ class Board():
     # - draw_from_deck-metod?
     # - trade_cards-metod?
     # Poängräkning i Board eller Player?
+
 
 if __name__ == "__main__":
     c = Controller()
