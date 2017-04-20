@@ -6,7 +6,7 @@ from random import shuffle
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.DEBUG)
 
-SCREEN_SIZE = (800, 600)
+SCREEN_SIZE = (1920, 1080)
 
 
 class Controller():
@@ -102,6 +102,15 @@ class Controller():
 
 class Card():
     VALID_CARD_TYPES = ('diamond', 'gold', 'silver','spice', 'cloth', 'leather', 'camel')
+    IMAGES = {
+        'diamond': pygame.image.load('JaipurImages/diamond.png'),
+        'gold': pygame.image.load('JaipurImages/gold.png'),
+        'silver': pygame.image.load('JaipurImages/silver.png'),
+        'spice': pygame.image.load('JaipurImages/spice.png'),
+        'cloth': pygame.image.load('JaipurImages/cloth.png'),
+        'leather': pygame.image.load('JaipurImages/leather.png'),
+        'camel': pygame.image.load('JaipurImages/camel.png')
+        }
 
     def __init__(self, controller, card_type):
 
@@ -118,21 +127,14 @@ class Card():
         self.card_type = card_type
 
         # Generate card image
-        self.surface = pygame.Surface((57, 81))
-        self.surface.fill(pygame.Color('#FFFFFF'), (0, 0, 57, 81))
+        self.surface = pygame.Surface((174, 241))
+#        self.surface.fill(pygame.Color('#FFFFFF'), (0, 0, 174, 241))
 
-        text = self.controller.font.render(self.card_type, 1, pygame.Color('#000000'))
-        self.surface.blit(text, ((self.surface.get_width() - text.get_width()) / 2, 34))
+#        text = self.controller.font.render(self.card_type, 1, pygame.Color('#000000'))
+#        self.surface.blit(text, ((self.surface.get_width() - text.get_width()) / 2, 34))
+        self.surface.blit(Card.IMAGES[self.card_type], (0, 0))
 
 
-
-        IMAGEDICT = {'diamond': pygame.image.load('JaipurImages/diamond.png'),
-                    'gold': pygame.image.load('JaipurImages/gold.png'),
-                    'silver': pygame.image.load('JaipurImages/silver.png'),
-                    'spice': pygame.image.load('JaipurImages/spice.png'),
-                    'cloth': pygame.image.load('JaipurImages/cloth.png'),
-                    'leather': pygame.image.load('JaipurImages/leather.png'),
-                    'camel': pygame.image.load('JaipurImages/camel.png')}
 
 
     def update(self):
@@ -220,8 +222,8 @@ class Board():
         self.market.append(self.deck.draw_card())
         self.market.append(self.deck.draw_card())
 
-        self.reverse = pygame.Surface((57, 81))
-        self.reverse.fill(pygame.Color('#FFFFFF'), (0, 0, 57, 81))
+        self.reverse = pygame.Surface((174, 241))
+        self.reverse.fill(pygame.Color('#FFFFFF'), (0, 0, 174, 241))
 
 
     #def mousedown(self, event):
@@ -241,12 +243,12 @@ class Board():
         pass
 
     def draw(self):
-        self.screen.blit(self.reverse, (100, 200))
+        self.screen.blit(self.reverse, (1600, 340))
 
-        x, y = 200, 200
+        x, y = 270, 340
         for card in self.market:
             card.draw(x, y)
-            x += 70
+            x += 240
 
 
     # Vad behöver representeras?
