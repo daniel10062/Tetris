@@ -213,7 +213,6 @@ class Board():
         self.screen = controller.screen
 
         self.deck = deck
-#        self.card = card
 
         self.market = []
         self.market.append(self.deck.draw_card_of_type('camel'))
@@ -225,22 +224,12 @@ class Board():
         self.reverse = pygame.Surface((174, 241))
         self.reverse.fill(pygame.Color('#FFFFFF'), (0, 0, 174, 241))
 
+    #def take_from_market(self, market):
+    #    while turn == PLAYER1:
+        #    pass
 
-    #def mousedown(self, event):
-        #if event.button == 1:
-            #x, y = self.latest_known_position
-
-            #if event.pos[0] > x and event.pos[0] < x + 57 and \
-                #event.pos[1] > y and event.pos[1] < y + 81:
-                # Click on us.
-                #logger.debug('Clicked on card!')
-
-    def take_from_market(self, market):
-        while turn == PLAYER1:
-            pass
-
-    def trade_from_market(self, market):
-        pass
+    #def trade_from_market(self, market):
+    #    pass
 
     def draw(self):
         self.screen.blit(self.reverse, (1600, 340))
