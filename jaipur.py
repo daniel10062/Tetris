@@ -109,7 +109,8 @@ class Card():
         'spice': pygame.image.load('JaipurImages/spice.png'),
         'cloth': pygame.image.load('JaipurImages/cloth.png'),
         'leather': pygame.image.load('JaipurImages/leather.png'),
-        'camel': pygame.image.load('JaipurImages/camel.png')
+        'camel': pygame.image.load('JaipurImages/camel.png'),
+        'backside': pygame.image.load('JaipurImages/backside.png')
         }
 
     def __init__(self, controller, card_type):
@@ -133,7 +134,6 @@ class Card():
 #        text = self.controller.font.render(self.card_type, 1, pygame.Color('#000000'))
 #        self.surface.blit(text, ((self.surface.get_width() - text.get_width()) / 2, 34))
         self.surface.blit(Card.IMAGES[self.card_type], (0, 0))
-
 
 
 
@@ -224,6 +224,7 @@ class Board():
 
         self.reverse = pygame.Surface((174, 241))
         self.reverse.fill(pygame.Color('#FFFFFF'), (0, 0, 174, 241))
+        self.reverse.blit(Card.IMAGES['backside'], (0, 0))
 
 
     #def mousedown(self, event):
