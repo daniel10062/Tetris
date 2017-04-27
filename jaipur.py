@@ -235,6 +235,12 @@ class Board():
         self.market.append(self.deck.draw_card())
         self.market.append(self.deck.draw_card())
 
+<<<<<<< HEAD
+=======
+        self.reverse = pygame.Surface((174, 241))
+        #self.reverse.fill(pygame.Color('#FFFFFF'), (0, 0, 174, 241))
+        self.reverse.blit(Card.IMAGES['backside'], (0, 0))
+>>>>>>> b8b8a3fd9e4911dfe0f6c51b23c9cc89fe29344a
 
         self.pointbrick = []
         self.pointbrick.append(self.deck.draw_card_of_type('diamond'))
