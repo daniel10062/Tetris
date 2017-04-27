@@ -223,7 +223,7 @@ class Board():
         self.market.append(self.deck.draw_card())
 
         self.reverse = pygame.Surface((174, 241))
-        self.reverse.fill(pygame.Color('#FFFFFF'), (0, 0, 174, 241))
+        #self.reverse.fill(pygame.Color('#FFFFFF'), (0, 0, 174, 241))
         self.reverse.blit(Card.IMAGES['backside'], (0, 0))
 
 
