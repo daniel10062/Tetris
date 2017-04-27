@@ -114,14 +114,14 @@ class Card():
         'backside': pygame.image.load('JaipurImages/backside.png')
         }
     IMAGESpoint = {
-        'diamond': pygame.image.load('JaipurImages/diamond.png'),
-        'gold': pygame.image.load('JaipurImages/gold.png'),
-        'silver': pygame.image.load('JaipurImages/silver.png'),
-        'spice': pygame.image.load('JaipurImages/spice.png'),
-        'cloth': pygame.image.load('JaipurImages/cloth.png'),
-        'leather': pygame.image.load('JaipurImages/leather.png'),
-        'camel': pygame.image.load('JaipurImages/camel.png'),
-        'backside': pygame.image.load('JaipurImages/backside.png')
+        'diamond': pygame.image.load('JaipurImages/diamondcoin.png'),
+        'gold': pygame.image.load('JaipurImages/goldcoin.png'),
+        'silver': pygame.image.load('JaipurImages/silvercoin.png'),
+        'spice': pygame.image.load('JaipurImages/spicecoin.png'),
+        'cloth': pygame.image.load('JaipurImages/clothcoin.png'),
+        'leather': pygame.image.load('JaipurImages/leathercoin.png'),
+        'camel': pygame.image.load('JaipurImages/camelcoin.png'),
+        'backside': pygame.image.load('JaipurImages/backsidecoin.png')
         }
 
     def __init__(self, controller, card_type):
@@ -235,13 +235,6 @@ class Board():
         self.market.append(self.deck.draw_card())
         self.market.append(self.deck.draw_card())
 
-<<<<<<< HEAD
-=======
-        self.reverse = pygame.Surface((174, 241))
-        #self.reverse.fill(pygame.Color('#FFFFFF'), (0, 0, 174, 241))
-        self.reverse.blit(Card.IMAGES['backside'], (0, 0))
->>>>>>> b8b8a3fd9e4911dfe0f6c51b23c9cc89fe29344a
-
         self.pointbrick = []
         self.pointbrick.append(self.deck.draw_card_of_type('diamond'))
         self.pointbrick.append(self.deck.draw_card_of_type('gold'))
@@ -255,6 +248,8 @@ class Board():
         self.reversebackside.append(self.deck.draw_card())
         self.reversebackside.append(self.deck.draw_card())
         self.reversebackside.append(self.deck.draw_card())
+
+        #self.coin = pygame.Surface((116, 116))
 
         self.reverse = pygame.Surface((174, 241))
         self.reverse.blit(Card.IMAGEScard['backside'], (0,0))
@@ -270,14 +265,15 @@ class Board():
         pass
 
     def draw(self):
-        posx, posy = 250, 200
+        posx, posy = 50, 50
 
-        pygame.draw.circle(self.screen, (255,255,255), (posx, posy), 50)
+        #pygame.draw.circle(self.screen, (255,255,255), (posx, posy), 50)
         #self.screen.blit(pygame.Surface((600,280)), (100, 100))
 
         for card in self.pointbrick:
-            self.screen.blit(Card.IMAGESpoint[card.card_type], (posx, posy))
-            posy += 30
+            self.screen.blit(Card.IMAGESpoint[card.card_type], (posx,posy))
+            #self.screen.blit(self.coin, (posx, posy))
+            posy += 115
 
         possx, possy = 1630, 340
         for card in self.reversebackside:
