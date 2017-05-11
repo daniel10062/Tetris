@@ -113,16 +113,6 @@ class Card():
         'camel': pygame.image.load('JaipurImages/camel.png'),
         'backside': pygame.image.load('JaipurImages/backside.png')
         }
-    IMAGESpoint = {
-        'diamond': pygame.image.load('JaipurImages/diamondcoin.png'),
-        'gold': pygame.image.load('JaipurImages/goldcoin.png'),
-        'silver': pygame.image.load('JaipurImages/silvercoin.png'),
-        'spice': pygame.image.load('JaipurImages/spicecoin.png'),
-        'cloth': pygame.image.load('JaipurImages/clothcoin.png'),
-        'leather': pygame.image.load('JaipurImages/leathercoin.png'),
-        'camel': pygame.image.load('JaipurImages/camelcoin.png'),
-        'backside': pygame.image.load('JaipurImages/backsidecoin.png')
-        }
 
     def __init__(self, controller, card_type):
 
@@ -132,6 +122,8 @@ class Card():
 
         self.controller.register_eventhandler(pygame.MOUSEBUTTONDOWN, self.mousedown)
         self.controller.register_eventhandler(pygame.MOUSEBUTTONUP, self.mouseup)
+
+        self.latest_known_position = None
 
         if not card_type in Card.VALID_CARD_TYPES:
             raise ValueError('Invalid card type')  # Not that Pythonic but helpful (this time at least).
@@ -155,17 +147,22 @@ class Card():
 
     def draw(self, x, y):
         self.latest_known_position = (x, y)
+        logger.debug('setting value {}, {}'.format(x,y))
+        logger.debug('object id: {} -- draw'.format(id(self)))
         self.screen.blit(self.surface, (x, y))
 
 
     def mousedown(self, event):
-        if event.button == 1:
-            x, y = self.latest_known_position
 
-            if event.pos[0] > x and event.pos[0] < x + 57 and \
-                    event.pos[1] > y and event.pos[1] < y + 81:
-                # Click on us.
-                logger.debug('Clicked on card!')
+        if not self.latest_known_position is None:
+            if event.button == 1:
+                logger.debug('object id: {} -- mousedown'.format(id(self)))
+                x, y = self.latest_known_position
+
+                if event.pos[0] > x and event.pos[0] < x + 57 and \
+                        event.pos[1] > y and event.pos[1] < y + 81:
+                    # Click on us.
+                    logger.debug('Clicked on card!')
 
     def mouseup(self, event):
         logger.debug('Mouse up on card {}'.format(self))
@@ -181,6 +178,78 @@ class Card():
 
 #Rita upp kort!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+class Coin():
+        VALID_COIN_TYPES = ('diamond', 'gold', 'silver','spice', 'cloth', 'leather', 'camel',)
+        IMAGEScoin = {
+            'gold': pygame.image.load('JaipurImages/goldcoin.png'),
+            'silver': pygame.image.load('JaipurImages/silvercoin.png'),
+            'spice': pygame.image.load('JaipurImages/spicecoin.png'),
+            'cloth': pygame.image.load('JaipurImages/clothcoin.png'),
+            'leather': pygame.image.load('JaipurImages/leathercoin.png'),
+            'camel': pygame.image.load('JaipurImages/camelcoin.png'),
+            'diamond': pygame.image.load('JaipurImages/diamondcoin.png'),
+            'backside': pygame.image.load('JaipurImages/backsidecoin.png')
+
+            }
+
+        def __init__(self, controller, card_type):
+
+            self.coin_type = ''  # We want to handle this later...
+            self.controller = controller
+            self.screen = controller.screen
+
+            self.controller.register_eventhandler(pygame.MOUSEBUTTONDOWN, self.mousedown)
+            self.controller.register_eventhandler(pygame.MOUSEBUTTONUP, self.mouseup)
+
+            if not coin_type in Coin.VALID_COIN_TYPES:
+                raise ValueError('Invalid card type')  # Not that Pythonic but helpful (this time at least).
+
+            self.coin_type = coin_type
+
+            # Generate card image
+            surface = pygame.Surface((116, 116), flags=pygame.SRCALPHA)
+    #        self.surface.fill(pygame.Color('#FFFFFF'), (0, 0, 174, 241))
+
+    #        text = self.controller.font.render(self.card_type, 1, pygame.Color('#000000'))
+    #        self.surface.blit(text, ((self.surface.get_width() - text.get_width()) / 2, 34))
+            surface.blit(Coin.IMAGEScoin[self.coin_type].convert_alpha(), (0, 0))
+            self.surface = surface
+
+
+        def update(self):
+            pass
+
+
+        def draw(self, x, y):
+            self.latest_known_position = (x, y)
+            self.screen.blit(self.surface, (x, y))
+
+
+        @staticmethod
+        def draw_specific_coin(coin_type, screen, x, y):
+            screen.blit(Coin.IMAGEScoin[coin_type], (x, y))
+
+
+        def mousedown(self, event):
+            if event.button == 1:
+                x, y = self.latest_known_position
+
+                if event.pos[0] > x and event.pos[0] < x + 57 and \
+                        event.pos[1] > y and event.pos[1] < y + 81:
+                    # Click on us.
+                    logger.debug('Clicked on card!')
+
+        def mouseup(self, event):
+            logger.debug('Mouse up on card {}'.format(self))
+
+
+        def __eq__(self, other):
+            return self.coin_type == other.coin_type
+
+
+        def __repr__(self):
+            return '<Card: {} (0x{:x})>'.format(self.card_type, id(self))
+
 class Deck():
 
     DEFAULT_CARD_LIST = ['diamond'] * 6 + \
@@ -194,6 +263,7 @@ class Deck():
     def __init__(self, controller, card_list = ''):
         self.controller = controller
         self.screen = controller.screen
+        self.reverse = pygame.Surface((174, 241))
 
         self._cards = [Card(self.controller, t) for t in Deck.DEFAULT_CARD_LIST]
         shuffle(self._cards)
@@ -201,6 +271,13 @@ class Deck():
 
     def draw(self):
         self.card.draw(x ,y)
+
+    @staticmethod
+    def draw_reverseside(screen, x, y):
+        screen.blit(Card.IMAGEScard['backside'], (x, y))
+
+    def draw_backside(possx, possy, self):
+        self.reverse.blit(Card.IMAGEScard['backside'], (0,0))
 
 
     def draw_card(self):
@@ -227,7 +304,6 @@ class Board():
 
         self.deck = deck
 
-
         self.market = []
         self.market.append(self.deck.draw_card_of_type('camel'))
         self.market.append(self.deck.draw_card_of_type('camel'))
@@ -249,13 +325,13 @@ class Board():
         self.reversebackside.append(self.deck.draw_card())
         self.reversebackside.append(self.deck.draw_card())
 
-        #self.coin = pygame.Surface((116, 116))
-
-        self.reverse = pygame.Surface((174, 241))
-        self.reverse.blit(Card.IMAGEScard['backside'], (0,0))
 
     def start_draw(self, card):
+    #    player1.c = 0
+    #    player2.c = 0
+    #    if player.turn = 0:
         pass
+
 
     def take_from_market(self, market):
         while turn == PLAYER1:
@@ -265,22 +341,21 @@ class Board():
         pass
 
     def draw(self):
-        posx, posy = 50, 50
 
-        #pygame.draw.circle(self.screen, (255,255,255), (posx, posy), 50)
-        #self.screen.blit(pygame.Surface((600,280)), (100, 100))
-
-        for card in self.pointbrick:
-            self.screen.blit(Card.IMAGESpoint[card.card_type], (posx,posy))
-            #self.screen.blit(self.coin, (posx, posy))
+    #    pygame.draw.circle(self.screen, (255,255,255), (posx, posy), 50)
+    #    self.screen.blit(pygame.Surface(posx, posy), (0, 0))
+        posy, posx = 20, 70
+        for coin_type in Coin.VALID_COIN_TYPES:
+            Coin.draw_specific_coin(coin_type, self.screen, posx, posy)
             posy += 115
 
-        possx, possy = 1630, 340
+        possx, possy = 1530, 340
         for card in self.reversebackside:
-            self.screen.blit(self.reverse, (possx, possy))
+            Deck.draw_reverseside(self.screen, possx, possy)
+        #    self.deck.draw_backside(possx, possy)
             possx += 15
 
-        x, y = 380, 340
+        x, y = 300, 340
         for card in self.market:
             card.draw(x, y)
             x += 240
