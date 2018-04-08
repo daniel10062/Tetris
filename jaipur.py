@@ -179,8 +179,7 @@ class Playfield():
         self.matrix = [[0 for x in range(10)] for y in range(20)]
         self.shape = 0
         self.shapes_S = {}
-        self.testx = 0
-        self.testy = 0
+
         #Test shape ---->
         self.matrix[0][3] = 3
         self.matrix[0][4] = 3
@@ -196,22 +195,27 @@ class Playfield():
 
 
     def tick(self):
-        if len(self.shapes_S) > 0:
+        if bool(self.shapes_S):
+            logger.debug('self.shapes is not empty')
             for key, value in self.shapes_S.items():
-                self.testy = key[1]
-                self.testx = key[0]
+                self.shapey = key[1]
+                self.shapex = key[0]
                 for xo, yo in value:
-                    self.matrix[key[0] + xo][key[1] + yo] = randint(1,3)
+                    self.matrix[key[0] + xo][key[1] + yo] = 1
+                    logger.debug((xo, yo))
+                logger.debug((key[0], key[1]))
+            logger.debug(self.matrix)
+            self.shapes_S = {}
 
     def stopped_shapes(self):
         surface = pygame.Surface((300, 600), pygame.SRCALPHA)
         for row in range(20):
             for column in range(10):
+                #unknown error after first shape
                 if self.matrix[row][column] > 0:
                     pygame.draw.rect(surface,
                     SHAPESCOLOR[1],
                     (30 * (column) + 2, 30 * (19 - (row)) + 2, 26, 26))
-                    self.shapes_S = {}
                     self.screen.blit(surface, (self.playfield_position))
 
 if __name__ == "__main__":
