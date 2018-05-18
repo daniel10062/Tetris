@@ -67,7 +67,7 @@ class Controller():
                     for i in range(18):
                         for xo, yo in geoform:
                             if self.playfield.matrix[y + yo - i][x + xo] != 0 or y + yo == 0
-                                self.playfield.matrix[y + yo][x + xo] = geo
+                                self.playfield.matrix[y + yo][x + xo] = geoform.color 
 
                     if event.type == pygame.KEYUP and event.key == pygame.K_DOWN:
                         self.geoforms.y = self.geoforms.y - 1
